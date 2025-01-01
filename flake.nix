@@ -9,26 +9,34 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, darwin, home-manager, nixpkgs, ... }@inputs: {
-    # Build darwin flake using:
-    # $ darwin-rebuild build --flake .#momcorp
-    darwinConfigurations."momcorp" = darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
-      pkgs = import inputs.nixpkgs {
+  outputs =
+    {
+      self,
+      darwin,
+      home-manager,
+      nixpkgs,
+      ...
+    }@inputs:
+    {
+      # Build darwin flake using:
+      # $ darwin-rebuild build --flake .#momcorp
+      darwinConfigurations."momcorp" = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        pkgs = import inputs.nixpkgs {
           system = "aarch64-darwin";
           config.allowUnfree = true;
+        };
+        modules = [
+          ./modules/darwin
+          home-manager.darwinModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.jaym = import ./modules/home-manager;
+            };
+          }
+        ];
       };
-      modules = [
-        ./modules/darwin
-        home-manager.darwinModules.home-manager
-        {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            users.jaym = import ./modules/home-manager;
-          };
-        }
-      ];
     };
-  };
 }
