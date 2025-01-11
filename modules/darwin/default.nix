@@ -9,11 +9,14 @@
   ];
   environment.systemPackages = [
     pkgs.coreutils
-    pkgs.ghostty
     pkgs.neovim
     pkgs.trippy
     pkgs.vscode
   ];
+  environment.extraInit = ''
+    eval $(/opt/homebrew/bin/brew shellenv)
+  '';
+
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
@@ -52,9 +55,12 @@
     masApps = { };
     casks = [
       "aerospace"
+      "ghostty"
       "raycast"
+      "vlc"
     ];
     taps = [ "nikitabobko/tap" ];
     onActivation.cleanup = "zap";
+    onActivation.upgrade = true;
   };
 }

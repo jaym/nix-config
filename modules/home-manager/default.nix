@@ -12,6 +12,10 @@
     ripgrep
     go
     nixfmt-rfc-style
+    htop
+    libwebp
+    sqlite-interactive
+    nodejs_22
   ];
   home.sessionVariables = {
     PAGER = "less";
