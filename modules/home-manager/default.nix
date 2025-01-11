@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 {
   home.username = "jaym";
   home.homeDirectory = lib.mkForce "/Users/jaym";
@@ -68,4 +68,6 @@
   home.file = {
     ".aerospace.toml".source = ./dotfiles/aerospace.toml;
   };
+
+  xdg.configFile."ghostty/config".source = ./dotfiles/ghostty/config;
 }
