@@ -4,6 +4,13 @@
   lib,
   ...
 }:
+let
+  homeDir = config.home.homeDirectory;
+  flakeDir = "${homeDir}/nix-config";
+  dotsDir = "${flakeDir}/dotfiles";
+  mkConfigSym =
+    relPath: config.lib.file.mkOutOfStoreSymlink "${dotsDir}/${relPath}";
+in
 {
   home.username = "jaym";
   home.homeDirectory = lib.mkForce "/Users/jaym";
@@ -71,16 +78,18 @@
   };
 
   home.file = {
-    ".aerospace.toml".source = ./dotfiles/aerospace.toml;
+    ".aerospace.toml".source = ../../dotfiles/aerospace.toml;
   };
 
-  xdg.configFile."ghostty/config".source = ./dotfiles/ghostty/config;
+  xdg.configFile."ghostty/config".source = ../../dotfiles/ghostty/config;
   xdg.configFile."karabiner/karabiner.homemanager.json" = {
-    source = ./dotfiles/karabiner/karabiner.json;
+    source = ../../dotfiles/karabiner/karabiner.json;
     onChange = ''
       rm -f ${config.xdg.configHome}/karabiner/karabiner.json
       cp ${config.xdg.configHome}/karabiner/karabiner.homemanager.json ${config.xdg.configHome}/karabiner/karabiner.json
       chmod u+w ${config.xdg.configHome}/karabiner/karabiner.json
     '';
   };
+
+  xdg.configFile."${homeDir}/Library/Application Support/Code/User/keybindings.json".source = mkConfigSym "vscode/keybindings.json";
 }
