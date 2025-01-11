@@ -56,6 +56,7 @@
     casks = [
       "aerospace"
       "ghostty"
+      "karabiner-elements"
       "raycast"
       "vlc"
     ];

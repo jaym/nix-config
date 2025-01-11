@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   home.username = "jaym";
   home.homeDirectory = lib.mkForce "/Users/jaym";
@@ -70,4 +75,12 @@
   };
 
   xdg.configFile."ghostty/config".source = ./dotfiles/ghostty/config;
+  xdg.configFile."karabiner/karabiner.homemanager.json" = {
+    source = ./dotfiles/karabiner/karabiner.json;
+    onChange = ''
+      rm -f ${config.xdg.configHome}/karabiner/karabiner.json
+      cp ${config.xdg.configHome}/karabiner/karabiner.homemanager.json ${config.xdg.configHome}/karabiner/karabiner.json
+      chmod u+w ${config.xdg.configHome}/karabiner/karabiner.json
+    '';
+  };
 }
