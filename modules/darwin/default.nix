@@ -17,6 +17,7 @@
     eval $(/opt/homebrew/bin/brew shellenv)
   '';
 
+  nix.settings.trusted-users = [ "jaym" ];
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';

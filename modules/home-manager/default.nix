@@ -8,8 +8,7 @@ let
   homeDir = config.home.homeDirectory;
   flakeDir = "${homeDir}/nix-config";
   dotsDir = "${flakeDir}/dotfiles";
-  mkConfigSym =
-    relPath: config.lib.file.mkOutOfStoreSymlink "${dotsDir}/${relPath}";
+  mkConfigSym = relPath: config.lib.file.mkOutOfStoreSymlink "${dotsDir}/${relPath}";
 in
 {
   home.username = "jaym";
@@ -18,22 +17,26 @@ in
   home.stateVersion = "24.11";
   home.packages = with pkgs; [
     curl
+    devenv
     fd
-    ffmpeg
-    less
-    ripgrep
-    go
-    nixfmt-rfc-style
     htop
-    libwebp
-    sqlite-interactive
-    nodejs_22
+    less
+    nixfmt-rfc-style
+    ripgrep
   ];
   home.sessionVariables = {
     PAGER = "less";
     CLICLOLOR = 1;
     EDITOR = "nvim";
     GOPATH = "$HOME/go";
+  };
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+    config.global = {
+      load_dotenv = true;
+    };
   };
 
   programs.bat = {
@@ -91,5 +94,6 @@ in
     '';
   };
 
-  xdg.configFile."${homeDir}/Library/Application Support/Code/User/keybindings.json".source = mkConfigSym "vscode/keybindings.json";
+  xdg.configFile."${homeDir}/Library/Application Support/Code/User/keybindings.json".source =
+    mkConfigSym "vscode/keybindings.json";
 }
