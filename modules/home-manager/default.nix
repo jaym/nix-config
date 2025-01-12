@@ -80,6 +80,16 @@ in
     enableZshIntegration = true;
   };
 
+  programs.vscode = {
+    enable = true;
+    enableUpdateCheck = false;
+    extensions = with pkgs.vscode-extensions; [
+      golang.go
+      mkhl.direnv
+      jnoortheen.nix-ide
+    ];
+  };
+
   home.file = {
     ".aerospace.toml".source = ../../dotfiles/aerospace.toml;
   };

@@ -7,6 +7,8 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -25,6 +27,9 @@
         pkgs = import inputs.nixpkgs {
           system = "aarch64-darwin";
           config.allowUnfree = true;
+          overlays = [
+            inputs.nix-vscode-extensions.overlays.default
+          ];
         };
         modules = [
           ./modules/darwin

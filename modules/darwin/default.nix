@@ -11,7 +11,6 @@
     pkgs.coreutils
     pkgs.neovim
     pkgs.trippy
-    pkgs.vscode
   ];
   environment.extraInit = ''
     eval $(/opt/homebrew/bin/brew shellenv)
