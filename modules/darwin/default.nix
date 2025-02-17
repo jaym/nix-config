@@ -24,14 +24,6 @@
   fonts.packages = [ pkgs.nerd-fonts.meslo-lg ];
 
   services.nix-daemon.enable = true;
-  services.sketchybar = {
-    enable = false;
-    config = ''
-      sketchybar --bar height=24
-      sketchybar --update
-      echo "sketchybar configuration loaded.."
-    '';
-  };
 
   system.defaults.NSGlobalDomain.InitialKeyRepeat = 14;
   system.defaults.NSGlobalDomain.KeyRepeat = 1;
@@ -53,12 +45,16 @@
     caskArgs.no_quarantine = true;
     global.brewfile = true;
     masApps = { };
+    brews = [
+    ];
     casks = [
       "aerospace"
       "ghostty"
       "karabiner-elements"
+      "podman-desktop"
       "raycast"
       "vlc"
+      "yubico-authenticator"
     ];
     taps = [ "nikitabobko/tap" ];
     onActivation.cleanup = "zap";

@@ -19,13 +19,11 @@
       nixpkgs,
       ...
     }@inputs:
-    {
-      # Build darwin flake using:
-      # $ darwin-rebuild build --flake .#momcorp
-      darwinConfigurations."momcorp" = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        pkgs = import inputs.nixpkgs {
-          system = "aarch64-darwin";
+    let 
+      buildDarwin = system: darwin.lib.darwinSystem {
+        inherit system;
+        pkgs = import nixpkgs {
+          inherit system;
           config.allowUnfree = true;
           overlays = [
             inputs.nix-vscode-extensions.overlays.default
@@ -43,5 +41,11 @@
           }
         ];
       };
+      buildAarch64Darwin = buildDarwin "aarch64-darwin";
+    in 
+    {
+      # Build darwin flake using:
+      # $ darwin-rebuild build --flake .#momcorp
+      darwinConfigurations."momcorp" = (buildAarch64Darwin);
     };
 }

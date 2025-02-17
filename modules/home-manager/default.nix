@@ -23,6 +23,7 @@ in
     less
     nixfmt-rfc-style
     ripgrep
+    rclone
   ];
   home.sessionVariables = {
     PAGER = "less";
