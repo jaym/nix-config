@@ -47,5 +47,6 @@
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#momcorp
       darwinConfigurations."momcorp" = (buildAarch64Darwin);
+      darwinConfigurations."flexo" = (buildAarch64Darwin);
     };
 }
