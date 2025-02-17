@@ -51,7 +51,6 @@
       "aerospace"
       "ghostty"
       "karabiner-elements"
-      "podman-desktop"
       "raycast"
       "vlc"
       "yubico-authenticator"
