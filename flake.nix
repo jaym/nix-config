@@ -42,11 +42,9 @@
         ];
       };
       buildAarch64Darwin = buildDarwin "aarch64-darwin";
+      darwinHosts = ["momcorp" "flexo"];
     in 
     {
-      # Build darwin flake using:
-      # $ darwin-rebuild build --flake .#momcorp
-      darwinConfigurations."momcorp" = (buildAarch64Darwin);
-      darwinConfigurations."flexo" = (buildAarch64Darwin);
+      darwinConfigurations = nixpkgs.lib.genAttrs darwinHosts (hostName: buildAarch64Darwin);
     };
 }
