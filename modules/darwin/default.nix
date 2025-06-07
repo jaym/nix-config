@@ -1,6 +1,7 @@
 { pkgs, config, ... }:
 {
   system.stateVersion = 4;
+  ids.gids.nixbld = 350;
 
   programs.zsh.enable = true;
   environment.shells = [
@@ -23,13 +24,11 @@
 
   fonts.packages = [ pkgs.nerd-fonts.meslo-lg ];
 
-  services.nix-daemon.enable = true;
-
   system.defaults.NSGlobalDomain.InitialKeyRepeat = 14;
   system.defaults.NSGlobalDomain.KeyRepeat = 1;
 
   # Enable sudo authentication with Touch ID
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   system.defaults.dock.autohide = true;
   system.defaults.dock.expose-group-apps = true;
@@ -54,6 +53,7 @@
       "raycast"
       "vlc"
       "yubico-authenticator"
+      "utm"
     ];
     taps = [ "nikitabobko/tap" ];
     onActivation.cleanup = "zap";
