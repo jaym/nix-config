@@ -41,10 +41,27 @@
           }
         ];
       };
+      buildHomeManager = system: home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+          overlays = [
+            inputs.nix-vscode-extensions.overlays.default
+          ];
+        };
+        modules = [
+          ./modules/home-manager
+        ];
+      };
       buildAarch64Darwin = buildDarwin "aarch64-darwin";
+      buildX86_64Linux = buildHomeManager "x86_64-linux";
       darwinHosts = ["momcorp" "flexo"];
+      linuxHosts = ["robotarms"];
     in 
     {
       darwinConfigurations = nixpkgs.lib.genAttrs darwinHosts (hostName: buildAarch64Darwin);
+      homeConfigurations = {
+        "jaym@robotarms" = buildX86_64Linux;
+      };
     };
 }
