@@ -71,6 +71,7 @@
         darwin.lib.darwinSystem {
           inherit system;
           pkgs = mkPkgs system;
+          extraSpecialArgs = { inherit inputs; };
           modules = [
             ./modules/darwin
             home-manager.darwinModules.home-manager
