@@ -39,9 +39,25 @@
         "aarch64-darwin"
         "x86_64-linux"
       ];
+
+      # Common pkgs configuration
+      mkPkgs =
+        system:
+        import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+          overlays = [
+            inputs.nix-vscode-extensions.overlays.default
+            inputs.mcp-servers-nix.overlays.default
+            (final: prev: {
+              mcp-nixos = inputs.mcp-nixos.packages."${final.system}".default;
+            })
+          ];
+        };
+
       treefmtEval = eachSystem (
         system:
-        inputs.treefmt-nix.lib.evalModule (import nixpkgs { inherit system; }) {
+        inputs.treefmt-nix.lib.evalModule (mkPkgs system) {
           projectRootFile = "flake.nix";
           programs = {
             nixfmt.enable = true;
@@ -54,17 +70,7 @@
         system:
         darwin.lib.darwinSystem {
           inherit system;
-          pkgs = import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-            overlays = [
-              inputs.nix-vscode-extensions.overlays.default
-              inputs.mcp-servers-nix.overlays.default
-              (final: prev: {
-                mcp-nixos = inputs.mcp-nixos.packages."${final.system}".default;
-              })
-            ];
-          };
+          pkgs = mkPkgs system;
           modules = [
             ./modules/darwin
             home-manager.darwinModules.home-manager
@@ -80,17 +86,7 @@
       buildHomeManager =
         system:
         home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-            overlays = [
-              inputs.nix-vscode-extensions.overlays.default
-              inputs.mcp-servers-nix.overlays.default
-              (final: prev: {
-                mcp-nixos = inputs.mcp-nixos.packages."${final.system}".default;
-              })
-            ];
-          };
+          pkgs = mkPkgs system;
           extraSpecialArgs = { inherit inputs; };
           modules = [
             ./modules/home-manager
