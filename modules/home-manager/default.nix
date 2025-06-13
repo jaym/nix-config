@@ -11,6 +11,10 @@ let
   mkConfigSym = relPath: config.lib.file.mkOutOfStoreSymlink "${dotsDir}/${relPath}";
 in
 {
+  imports = [
+    ./mcp
+  ];
+
   home.username = "jaym";
   home.homeDirectory = 
     if pkgs.stdenv.isDarwin 
@@ -22,11 +26,14 @@ in
     curl
     devenv
     fd
+    gh
     htop
     less
+    nixd
     nixfmt-rfc-style
     ripgrep
     rclone
+    terraform
   ];
   home.sessionVariables = {
     PAGER = "less";
@@ -79,10 +86,14 @@ in
         then "darwin-rebuild switch --flake ~/nix-config/.#"
         else "nix run home-manager -- switch --flake .";
       nixup = "pushd ~/nix-config; nix flake update; nixswitch; popd";
+      ag = "rg";
     };
     initExtra = ''
       bindkey '^A' beginning-of-line # Move back word in lin
       bindkey '^E' end-of-line # Move next word in line
+
+      export GOPATH="$HOME/workspace/godev"
+      export PATH=$HOME/.cargo/bin:$GOPATH/bin:$HOME/.mix/escripts/:$HOME/.local/bin:$PATH
     '';
   };
 
@@ -102,14 +113,14 @@ in
     enableZshIntegration = true;
   };
 
-  programs.vscode = {
+  programs.atuin = {
     enable = true;
-    enableUpdateCheck = false;
-    extensions = with pkgs.vscode-extensions; [
-      golang.go
-      mkhl.direnv
-      jnoortheen.nix-ide
-    ];
+    enableZshIntegration = true;
+    settings = {
+      search_mode = "fulltext";
+      style = "compact";
+    };
+    flags = [ "--disable-up-arrow" ];
   };
 
   home.file = lib.mkIf pkgs.stdenv.isDarwin {
