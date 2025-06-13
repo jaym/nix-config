@@ -14,6 +14,11 @@
       url = "github:natsukium/mcp-servers-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    mcp-nixos = {
+      url = "github:utensils/mcp-nixos";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -33,6 +38,9 @@
           overlays = [
             inputs.nix-vscode-extensions.overlays.default
             inputs.mcp-servers-nix.overlays.default
+            (final: prev: {
+              mcp-nixos = inputs.mcp-nixos.packages."${final.system}".default;
+            })
           ];
         };
         modules = [
@@ -54,8 +62,12 @@
           overlays = [
             inputs.nix-vscode-extensions.overlays.default
             inputs.mcp-servers-nix.overlays.default
+            (final: prev: {
+              mcp-nixos = inputs.mcp-nixos.packages."${final.system}".default;
+            })
           ];
         };
+        extraSpecialArgs = { inherit inputs; };
         modules = [
           ./modules/home-manager
         ];

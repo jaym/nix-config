@@ -2,7 +2,7 @@
   config,
   pkgs,
   lib,
-  mcp-servers-nix,
+  inputs,
   ...
 }:
 let
@@ -27,7 +27,6 @@ in
     curl
     devenv
     fd
-    gh
     htop
     less
     nixd
@@ -36,6 +35,7 @@ in
     rclone
     terraform
   ];
+
   home.sessionVariables = {
     PAGER = "less";
     CLICLOLOR = 1;
@@ -72,6 +72,14 @@ in
     userEmail = "jay@thechamberofunderstanding.com";
   };
 
+  programs.gh = {
+    enable = true;
+    extensions = [pkgs.gh-copilot];
+    settings = {
+      gitProtocol = "ssh";
+    };
+  };
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -89,7 +97,7 @@ in
       nixup = "pushd ~/nix-config; nix flake update; nixswitch; popd";
       ag = "rg";
     };
-    initExtra = ''
+    initContent = ''
       bindkey '^A' beginning-of-line # Move back word in lin
       bindkey '^E' end-of-line # Move next word in line
 
