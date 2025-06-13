@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  mcp-servers-nix,
   ...
 }:
 let
