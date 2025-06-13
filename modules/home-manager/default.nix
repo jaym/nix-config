@@ -17,10 +17,7 @@ in
   ];
 
   home.username = "jaym";
-  home.homeDirectory = 
-    if pkgs.stdenv.isDarwin 
-    then "/Users/jaym" 
-    else "/home/jaym";
+  home.homeDirectory = if pkgs.stdenv.isDarwin then "/Users/jaym" else "/home/jaym";
 
   home.stateVersion = "24.11";
   home.packages = with pkgs; [
@@ -74,7 +71,7 @@ in
 
   programs.gh = {
     enable = true;
-    extensions = [pkgs.gh-copilot];
+    extensions = [ pkgs.gh-copilot ];
     settings = {
       gitProtocol = "ssh";
     };
@@ -91,9 +88,11 @@ in
     };
     shellAliases = {
       vim = "nvim";
-      nixswitch = if pkgs.stdenv.isDarwin 
-        then "darwin-rebuild switch --flake ~/nix-config/.#"
-        else "nix run home-manager -- switch --flake .";
+      nixswitch =
+        if pkgs.stdenv.isDarwin then
+          "darwin-rebuild switch --flake ~/nix-config/.#"
+        else
+          "nix run home-manager -- switch --flake .";
       nixup = "pushd ~/nix-config; nix flake update; nixswitch; popd";
       ag = "rg";
     };
@@ -136,18 +135,20 @@ in
     ".aerospace.toml".source = ../../dotfiles/aerospace.toml;
   };
 
-  xdg.configFile = {
-    "ghostty/config".source = ../../dotfiles/ghostty/config;
-  } // lib.optionalAttrs pkgs.stdenv.isDarwin {
-    "karabiner/karabiner.homemanager.json" = {
-      source = ../../dotfiles/karabiner/karabiner.json;
-      onChange = ''
-        rm -f ${config.xdg.configHome}/karabiner/karabiner.json
-        cp ${config.xdg.configHome}/karabiner/karabiner.homemanager.json ${config.xdg.configHome}/karabiner/karabiner.json
-        chmod u+w ${config.xdg.configHome}/karabiner/karabiner.json
-      '';
+  xdg.configFile =
+    {
+      "ghostty/config".source = ../../dotfiles/ghostty/config;
+    }
+    // lib.optionalAttrs pkgs.stdenv.isDarwin {
+      "karabiner/karabiner.homemanager.json" = {
+        source = ../../dotfiles/karabiner/karabiner.json;
+        onChange = ''
+          rm -f ${config.xdg.configHome}/karabiner/karabiner.json
+          cp ${config.xdg.configHome}/karabiner/karabiner.homemanager.json ${config.xdg.configHome}/karabiner/karabiner.json
+          chmod u+w ${config.xdg.configHome}/karabiner/karabiner.json
+        '';
+      };
+      "${homeDir}/Library/Application Support/Code/User/keybindings.json".source =
+        mkConfigSym "vscode/keybindings.json";
     };
-    "${homeDir}/Library/Application Support/Code/User/keybindings.json".source =
-      mkConfigSym "vscode/keybindings.json";
-  };
 }

@@ -19,6 +19,11 @@
       url = "github:utensils/mcp-nixos";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -29,58 +34,86 @@
       nixpkgs,
       ...
     }@inputs:
-    let 
-      buildDarwin = system: darwin.lib.darwinSystem {
-        inherit system;
-        pkgs = import nixpkgs {
+    let
+      eachSystem = inputs.nixpkgs.lib.genAttrs [
+        "aarch64-darwin"
+        "x86_64-linux"
+      ];
+      treefmtEval = eachSystem (
+        system:
+        inputs.treefmt-nix.lib.evalModule (import nixpkgs { inherit system; }) {
+          projectRootFile = "flake.nix";
+          programs = {
+            nixfmt.enable = true;
+            nixfmt.package = nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
+          };
+        }
+      );
+
+      buildDarwin =
+        system:
+        darwin.lib.darwinSystem {
           inherit system;
-          config.allowUnfree = true;
-          overlays = [
-            inputs.nix-vscode-extensions.overlays.default
-            inputs.mcp-servers-nix.overlays.default
-            (final: prev: {
-              mcp-nixos = inputs.mcp-nixos.packages."${final.system}".default;
-            })
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+            overlays = [
+              inputs.nix-vscode-extensions.overlays.default
+              inputs.mcp-servers-nix.overlays.default
+              (final: prev: {
+                mcp-nixos = inputs.mcp-nixos.packages."${final.system}".default;
+              })
+            ];
+          };
+          modules = [
+            ./modules/darwin
+            home-manager.darwinModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.jaym = import ./modules/home-manager;
+              };
+            }
           ];
         };
-        modules = [
-          ./modules/darwin
-          home-manager.darwinModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.jaym = import ./modules/home-manager;
-            };
-          }
-        ];
-      };
-      buildHomeManager = system: home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-          overlays = [
-            inputs.nix-vscode-extensions.overlays.default
-            inputs.mcp-servers-nix.overlays.default
-            (final: prev: {
-              mcp-nixos = inputs.mcp-nixos.packages."${final.system}".default;
-            })
+      buildHomeManager =
+        system:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+            overlays = [
+              inputs.nix-vscode-extensions.overlays.default
+              inputs.mcp-servers-nix.overlays.default
+              (final: prev: {
+                mcp-nixos = inputs.mcp-nixos.packages."${final.system}".default;
+              })
+            ];
+          };
+          extraSpecialArgs = { inherit inputs; };
+          modules = [
+            ./modules/home-manager
           ];
         };
-        extraSpecialArgs = { inherit inputs; };
-        modules = [
-          ./modules/home-manager
-        ];
-      };
       buildAarch64Darwin = buildDarwin "aarch64-darwin";
       buildX86_64Linux = buildHomeManager "x86_64-linux";
-      darwinHosts = ["momcorp" "flexo"];
-      linuxHosts = ["robotarms"];
-    in 
+      darwinHosts = [
+        "momcorp"
+        "flexo"
+      ];
+      linuxHosts = [ "robotarms" ];
+    in
     {
       darwinConfigurations = nixpkgs.lib.genAttrs darwinHosts (hostName: buildAarch64Darwin);
       homeConfigurations = {
         "jaym@robotarms" = buildX86_64Linux;
       };
+
+      # treefmt
+      formatter = eachSystem (system: treefmtEval.${system}.config.build.wrapper);
+      checks = eachSystem (system: {
+        formatting = treefmtEval.${system}.config.build.check self;
+      });
     };
 }
