@@ -6,6 +6,7 @@ let
     programs = {
       fetch.enable = true;
       playwright.enable = true;
+      context7.enable = true;
     };
 
     settings.servers = {
