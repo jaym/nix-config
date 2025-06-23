@@ -4,7 +4,7 @@ let
   claude-code = (pkgs.callPackage ./claude-code.nix { });
   mcp-servers-config = inputs.mcp-servers-nix.lib.mkConfig pkgs {
     programs = {
-      fetch.enable = true;
+      fetch.enable = false;
       playwright.enable = true;
       context7.enable = true;
     };

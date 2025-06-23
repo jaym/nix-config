@@ -131,6 +131,10 @@ in
     flags = [ "--disable-up-arrow" ];
   };
 
+  programs.uv = {
+    enable = true;
+  };
+
   home.file = lib.mkIf pkgs.stdenv.isDarwin {
     ".aerospace.toml".source = ../../dotfiles/aerospace.toml;
   };
