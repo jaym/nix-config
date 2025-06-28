@@ -81,7 +81,7 @@ in
     enable = true;
     enableCompletion = true;
     autosuggestion = {
-      enable = true;
+      enable = false;
     };
     syntaxHighlighting = {
       enable = true;
@@ -99,6 +99,9 @@ in
     initContent = ''
       bindkey '^A' beginning-of-line # Move back word in lin
       bindkey '^E' end-of-line # Move next word in line
+      bindkey '^[[1;5C' forward-word # Ctrl+Right
+      bindkey '^[[1;5D' backward-word # Ctrl+Left
+      bindkey '^H' backward-kill-word # Ctrl+Backspace
 
       export GOPATH="$HOME/workspace/godev"
       export PATH=$HOME/.cargo/bin:$GOPATH/bin:$HOME/.mix/escripts/:$HOME/.local/bin:$PATH

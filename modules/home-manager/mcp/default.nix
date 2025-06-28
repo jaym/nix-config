@@ -18,6 +18,16 @@ let
         command = "${lib.getExe mcp-nixos}";
         args = [ ];
       };
+      hcp-terraform = {
+        command = "docker";
+        args = [
+          "run"
+          "-i"
+          "--rm"
+          "hashicorp/terraform-mcp-server:0.1.0"
+        ];
+      };
+      
     };
   };
   inherit (pkgs) stdenv;
