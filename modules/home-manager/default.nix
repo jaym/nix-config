@@ -21,16 +21,23 @@ in
 
   home.stateVersion = "24.11";
   home.packages = with pkgs; [
+    ast-grep
     curl
+    # claudia
     devenv
     fd
     htop
     less
     nixd
     nixfmt-rfc-style
+    opencode
     ripgrep
     rclone
+    sqlfluff
     terraform
+    trippy
+    unzip
+    xh
   ];
 
   home.sessionVariables = {

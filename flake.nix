@@ -2,7 +2,7 @@
   description = "Example nix-darwin system flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/master";
     darwin.url = "github:LnL7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
@@ -52,6 +52,7 @@
             (final: prev: {
               mcp-nixos = inputs.mcp-nixos.packages."${final.system}".default;
             })
+            (final: prev: import ./pkgs { pkgs = final; })
           ];
         };
 
