@@ -3,6 +3,12 @@
   system.stateVersion = 4;
   ids.gids.nixbld = 350;
 
+  users.users.jaym = {
+    home = /Users/jaym;
+  };
+
+  system.primaryUser = "jaym";
+
   programs.zsh.enable = true;
   environment.shells = [
     pkgs.bash
@@ -17,7 +23,8 @@
     eval $(/opt/homebrew/bin/brew shellenv)
   '';
 
-  nix.settings.trusted-users = [ "jaym" ];
+  nix.enable = false;
+  nix.settings.trusted-users = [ "root" "jaym" ];
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
@@ -54,6 +61,7 @@
       "vlc"
       "yubico-authenticator"
       "utm"
+      "visual-studio-code"
     ];
     taps = [ "nikitabobko/tap" ];
     onActivation.cleanup = "zap";

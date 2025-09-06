@@ -37,7 +37,7 @@ in
     claude-code
   ];
   xdg.configFile."claude/servers.json" = {
-    enable = stdenv.hostPlatform.isLinux;
+    enable = stdenv.hostPlatform.isLinux || stdenv.hostPlatform.isDarwin;
     # claude --mcp-config ~/.config/claude/servers.json
     source = mcp-servers-config;
   };

@@ -17,7 +17,7 @@ in
   ];
 
   home.username = "jaym";
-  home.homeDirectory = if pkgs.stdenv.isDarwin then "/Users/jaym" else "/home/jaym";
+  home.homeDirectory = if pkgs.stdenv.isDarwin then /Users/jaym else /home/jaym;
 
   home.stateVersion = "24.11";
   home.packages = with pkgs; [
@@ -97,7 +97,7 @@ in
       vim = "nvim";
       nixswitch =
         if pkgs.stdenv.isDarwin then
-          "darwin-rebuild switch --flake ~/nix-config/.#"
+          "sudo darwin-rebuild switch --flake ~/nix-config/.#"
         else
           "nix run home-manager -- switch --flake .";
       nixup = "pushd ~/nix-config; nix flake update; nixswitch; popd";

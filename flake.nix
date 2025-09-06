@@ -2,7 +2,7 @@
   description = "Example nix-darwin system flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/master";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     darwin.url = "github:LnL7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
@@ -72,12 +72,13 @@
         darwin.lib.darwinSystem {
           inherit system;
           pkgs = mkPkgs system;
-          extraSpecialArgs = { inherit inputs; };
+          specialArgs = { inherit inputs; };
           modules = [
             ./modules/darwin
             home-manager.darwinModules.home-manager
             {
               home-manager = {
+                extraSpecialArgs = { inherit inputs; };
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 users.jaym = import ./modules/home-manager;
@@ -99,6 +100,7 @@
       darwinHosts = [
         "momcorp"
         "flexo"
+	"roswell"
       ];
       linuxHosts = [ "robotarms" ];
     in
