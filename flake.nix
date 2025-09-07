@@ -100,7 +100,7 @@
       darwinHosts = [
         "momcorp"
         "flexo"
-	"roswell"
+        "roswell"
       ];
       linuxHosts = [ "robotarms" ];
     in

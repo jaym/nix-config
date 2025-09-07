@@ -1,3 +1,4 @@
-{pkgs, ...}: {
-  claudia = pkgs.callPackage ./claudia {};
+{ pkgs, ... }:
+{
+  claudia = pkgs.callPackage ./claudia { };
 }

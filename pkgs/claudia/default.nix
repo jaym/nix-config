@@ -13,7 +13,8 @@
   perl,
   nodejs,
   nodePackages,
-}: let
+}:
+let
   pname = "claudia";
   version = "0.1.0";
 in
@@ -24,12 +25,12 @@ rustPlatform.buildRustPackage {
     owner = "getAsterisk";
     repo = "claudia";
     rev = "v0.1.0";
-      #sha256 = "0r7wk6dkl98ip6ismr9qn9ng71cqlabsqagw4qk8dqayfamc8fhw";
+    #sha256 = "0r7wk6dkl98ip6ismr9qn9ng71cqlabsqagw4qk8dqayfamc8fhw";
     sha256 = "j0i31VPlmFfNpQIlRDwTCfzeNL5pol+tmAmQVO+xfiY=";
   };
 
   cargoHash = "sha256-kptlN7zKnU9952mbDXW/8Pqv8+lXRhx+3utUTb/e8fY=";
-  
+
   # The Cargo.lock is in src-tauri directory
   sourceRoot = "source/src-tauri";
 
@@ -64,12 +65,12 @@ rustPlatform.buildRustPackage {
     echo '#!/bin/sh' > binaries/claude-code-x86_64-unknown-linux-gnu
     echo 'echo "Claude Code CLI stub - install real binary separately"' >> binaries/claude-code-x86_64-unknown-linux-gnu
     chmod +x binaries/claude-code-x86_64-unknown-linux-gnu
-    
+
     cd ..
-    
+
     # Install dependencies
     bun install --frozen-lockfile
-    
+
     # Build frontend
     bun run build
     cd src-tauri
@@ -90,6 +91,6 @@ rustPlatform.buildRustPackage {
     homepage = "https://github.com/getAsterisk/claudia";
     license = licenses.mit;
     platforms = platforms.linux;
-    maintainers = [];
+    maintainers = [ ];
   };
 }

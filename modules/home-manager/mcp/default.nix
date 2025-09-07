@@ -27,7 +27,7 @@ let
           "hashicorp/terraform-mcp-server:0.1.0"
         ];
       };
-      
+
     };
   };
   inherit (pkgs) stdenv;

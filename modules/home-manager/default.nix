@@ -149,34 +149,32 @@ in
     ".aerospace.toml".source = ../../dotfiles/aerospace.toml;
   };
 
-  xdg.configFile =
-    {
-      "ghostty/config".source = ../../dotfiles/ghostty/config;
-      "alacritty/alacritty.toml" = {
-        text = ''
-          [general]
-          import = ["${pkgs.alacritty-theme}/share/alacritty-theme/dracula.toml"]
+  xdg.configFile = {
+    "ghostty/config".source = ../../dotfiles/ghostty/config;
+    "alacritty/alacritty.toml" = {
+      text = ''
+        [general]
+        import = ["${pkgs.alacritty-theme}/share/alacritty-theme/dracula.toml"]
 
-          [scrolling]
-          history = 10000
+        [scrolling]
+        history = 10000
 
-          [selection]
-          save_to_clipboard = true
-          '';
-      };
-
-
-    }
-    // lib.optionalAttrs pkgs.stdenv.isDarwin {
-      "karabiner/karabiner.homemanager.json" = {
-        source = ../../dotfiles/karabiner/karabiner.json;
-        onChange = ''
-          rm -f ${config.xdg.configHome}/karabiner/karabiner.json
-          cp ${config.xdg.configHome}/karabiner/karabiner.homemanager.json ${config.xdg.configHome}/karabiner/karabiner.json
-          chmod u+w ${config.xdg.configHome}/karabiner/karabiner.json
-        '';
-      };
-      "${homeDir}/Library/Application Support/Code/User/keybindings.json".source =
-        mkConfigSym "vscode/keybindings.json";
+        [selection]
+        save_to_clipboard = true
+      '';
     };
+
+  }
+  // lib.optionalAttrs pkgs.stdenv.isDarwin {
+    "karabiner/karabiner.homemanager.json" = {
+      source = ../../dotfiles/karabiner/karabiner.json;
+      onChange = ''
+        rm -f ${config.xdg.configHome}/karabiner/karabiner.json
+        cp ${config.xdg.configHome}/karabiner/karabiner.homemanager.json ${config.xdg.configHome}/karabiner/karabiner.json
+        chmod u+w ${config.xdg.configHome}/karabiner/karabiner.json
+      '';
+    };
+    "${homeDir}/Library/Application Support/Code/User/keybindings.json".source =
+      mkConfigSym "vscode/keybindings.json";
+  };
 }

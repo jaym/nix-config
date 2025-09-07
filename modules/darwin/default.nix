@@ -24,7 +24,10 @@
   '';
 
   nix.enable = false;
-  nix.settings.trusted-users = [ "root" "jaym" ];
+  nix.settings.trusted-users = [
+    "root"
+    "jaym"
+  ];
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
