@@ -48,11 +48,6 @@ in
     CARAPACE_BRIDGES = "zsh,fish,bash,inshellisense";
   };
 
-  programs.alacritty = {
-    enable = true;
-    theme = "dracula";
-  };
-
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
@@ -157,6 +152,20 @@ in
   xdg.configFile =
     {
       "ghostty/config".source = ../../dotfiles/ghostty/config;
+      "alacritty/alacritty.toml" = {
+        text = ''
+          [general]
+          import = ["${pkgs.alacritty-theme}/share/alacritty-theme/dracula.toml"]
+
+          [scrolling]
+          history = 10000
+
+          [selection]
+          save_to_clipboard = true
+          '';
+      };
+
+
     }
     // lib.optionalAttrs pkgs.stdenv.isDarwin {
       "karabiner/karabiner.homemanager.json" = {
