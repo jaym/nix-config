@@ -48,6 +48,11 @@ in
     CARAPACE_BRIDGES = "zsh,fish,bash,inshellisense";
   };
 
+  programs.alacritty = {
+    enable = true;
+    theme = "dracula";
+  };
+
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
