@@ -129,6 +129,12 @@ in
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
+    settings = {
+      kubernetes = {
+        disabled = false;
+        style = "bold red";
+      };
+    };
   };
 
   programs.atuin = {
@@ -154,7 +160,7 @@ in
     "alacritty/alacritty.toml" = {
       text = ''
         [general]
-        import = ["${pkgs.alacritty-theme}/share/alacritty-theme/dracula.toml"]
+        import = ["${pkgs.alacritty-theme}/share/alacritty-theme/catppuccin_latte.toml"]
 
         [scrolling]
         history = 10000
