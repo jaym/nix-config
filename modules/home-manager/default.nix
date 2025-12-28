@@ -13,7 +13,6 @@ let
 in
 {
   imports = [
-    ./mcp
   ];
 
   home.username = "jaym";

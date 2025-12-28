@@ -57,10 +57,8 @@
     brews = [
     ];
     casks = [
-      "aerospace"
       "ghostty"
       "karabiner-elements"
-      "raycast"
       "vlc"
       "yubico-authenticator"
       "utm"

@@ -10,16 +10,6 @@
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
 
-    mcp-servers-nix = {
-      url = "github:natsukium/mcp-servers-nix";
-      # inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    mcp-nixos = {
-      url = "github:utensils/mcp-nixos";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -48,10 +38,6 @@
           config.allowUnfree = true;
           overlays = [
             inputs.nix-vscode-extensions.overlays.default
-            inputs.mcp-servers-nix.overlays.default
-            (final: prev: {
-              mcp-nixos = inputs.mcp-nixos.packages."${final.system}".default;
-            })
             (final: prev: import ./pkgs { pkgs = final; })
           ];
         };
@@ -101,6 +87,7 @@
         "momcorp"
         "flexo"
         "roswell"
+        "fishyjoes"
       ];
       linuxHosts = [ "robotarms" ];
     in
